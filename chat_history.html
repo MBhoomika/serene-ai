@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Chat History</h2>
+    
+    <!-- Search Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form action="{{ url_for('search_chat') }}" method="POST" class="d-flex">
+                <input type="text" name="query" class="form-control me-2" placeholder="Search messages..." value="{{ query or '' }}">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Chat History -->
+    <div class="chat-history">
+        {% for entry in history.items %}
+        <div class="card mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>{{ entry.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</span>
+                {% if entry.emotion %}
+                <span class="badge bg-info">{{ entry.emotion }}</span>
+                {% endif %}
+                {% if entry.intent %}
+                <span class="badge bg-secondary">{{ entry.intent }}</span>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong>You:</strong>
+                    <p class="mb-0">{{ entry.message }}</p>
+                </div>
+                <div>
+                    <strong>SereneAI:</strong>
+                    <p class="mb-0">{{ entry.response }}</p>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            No chat history found.
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if history.pages > 1 %}
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if history.has_prev %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('chat_history', page=history.prev_num) }}">Previous</a>
+            </li>
+            {% endif %}
+            
+            {% for page_num in history.iter_pages() %}
+                {% if page_num %}
+                    <li class="page-item {% if page_num == history.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('chat_history', page=page_num) }}">{{ page_num }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            
+            {% if history.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('chat_history', page=history.next_num) }}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+
+<style>
+.chat-history {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 1rem;
+}
+
+.chat-history::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-history::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.chat-history::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.chat-history::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.badge {
+    font-size: 0.8rem;
+    padding: 0.4em 0.8em;
+}
+</style>
+{% endblock %} 

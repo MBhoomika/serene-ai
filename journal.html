@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Journal - Serene AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Dancing+Script:wght@700&family=Lora:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #76b852, #8DC26F);
+            color: #2C3E50;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5em;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 0.5rem;
+        }
+
+        .journal-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        .entries-sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 1.5rem;
+            height: fit-content;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+        }
+
+        .entry-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border-left: 4px solid #76b852;
+        }
+
+        .entry-card:hover {
+            transform: translateX(5px);
+        }
+
+        .entry-date {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .entry-preview {
+            font-size: 0.9em;
+            color: #444;
+            margin-top: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            line-clamp: 2;
+            overflow: hidden;
+        }
+
+        .writing-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+        }
+
+        .paper {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            min-height: 500px;
+            position: relative;
+            background-image: linear-gradient(#e1e1e1 1px, transparent 1px);
+            background-size: 100% 2em;
+            line-height: 2em;
+        }
+
+        .journal-title {
+            border: none;
+            font-size: 1.5em;
+            font-family: 'Lora', serif;
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid #e1e1e1;
+        }
+
+        .journal-content {
+            border: none;
+            width: 100%;
+            height: 400px;
+            font-family: 'Lora', serif;
+            font-size: 1.1em;
+            line-height: 2em;
+            resize: none;
+            background: transparent;
+        }
+
+        .journal-title:focus, .journal-content:focus {
+            outline: none;
+        }
+
+        .mood-selector {
+            margin: 1rem 0;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .mood-option {
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+
+        .mood-option:hover {
+            transform: scale(1.2);
+        }
+
+        .selected {
+            background: #e1e1e1;
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, #76b852, #8DC26F);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(118, 184, 82, 0.3);
+        }
+
+        .prompts-container {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .prompt-text {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            color: #666;
+            margin: 1rem 0;
+        }
+
+        .new-prompt-btn {
+            background: none;
+            border: 2px solid #76b852;
+            color: #76b852;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .new-prompt-btn:hover {
+            background: #76b852;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .journal-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>My Journal</h1>
+            <p>Express your thoughts and feelings</p>
+        </div>
+
+        <div class="journal-container">
+            <div class="entries-sidebar">
+                <h2>Recent Entries</h2>
+                {% if entries %}
+                    {% for entry in entries %}
+                    <div class="entry-card">
+                        <div class="entry-date">{{ entry.timestamp.strftime('%Y-%m-%d %H:%M') }}</div>
+                        <div class="entry-preview">{{ entry.content[:100] }}...</div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="entry-card">
+                        <div class="entry-preview">No entries yet. Start writing your first journal entry!</div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="writing-section">
+                <div class="paper">
+                    <input type="text" class="journal-title" placeholder="Entry Title...">
+                    <textarea class="journal-content" placeholder="Start writing your thoughts..."></textarea>
+                </div>
+
+                <div class="mood-selector">
+                    <div class="mood-option" onclick="selectMood(this)">😊</div>
+                    <div class="mood-option" onclick="selectMood(this)">😌</div>
+                    <div class="mood-option" onclick="selectMood(this)">😔</div>
+                    <div class="mood-option" onclick="selectMood(this)">😤</div>
+                    <div class="mood-option" onclick="selectMood(this)">🤔</div>
+                </div>
+
+                <button class="save-btn">Save Entry 📝</button>
+
+                <div class="prompts-container">
+                    <div class="prompt-text" id="journalPrompt">
+                        "What made you smile today?"
+                    </div>
+                    <button class="new-prompt-btn" onclick="newPrompt()">New Prompt ✨</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedMood = null;
+
+        function selectMood(element) {
+            // Remove selected class from all moods
+            document.querySelectorAll('.mood-option').forEach(mood => {
+                mood.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked mood
+            element.classList.add('selected');
+            selectedMood = element.textContent;
+        }
+
+        function newPrompt() {
+            const prompts = [
+                "What made you smile today?",
+                "What are you grateful for?",
+                "What challenges did you face today?",
+                "What are your goals for tomorrow?",
+                "How are you feeling right now?",
+                "What's on your mind?",
+                "What would you like to change?",
+                "What are you proud of today?"
+            ];
+            
+            const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+            document.getElementById('journalPrompt').textContent = randomPrompt;
+        }
+
+        // Add event listener for save button
+        document.querySelector('.save-btn').addEventListener('click', async function() {
+            const title = document.querySelector('.journal-title').value;
+            const content = document.querySelector('.journal-content').value;
+            
+            if (!content) {
+                alert('Please write something in your journal before saving.');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/save_journal', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                        content: content,
+                        mood: selectedMood
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('Journal entry saved successfully!');
+                    // Clear the form
+                    document.querySelector('.journal-title').value = '';
+                    document.querySelector('.journal-content').value = '';
+                    // Clear selected mood
+                    document.querySelectorAll('.mood-option').forEach(mood => {
+                        mood.classList.remove('selected');
+                    });
+                    selectedMood = null;
+                    // Reload the page to show the new entry
+                    window.location.reload();
+                } else {
+                    console.error('Server error:', data);
+                    alert('Error saving journal entry: ' + (data.error || 'Unknown error occurred'));
+                }
+            } catch (error) {
+                console.error('Network error:', error);
+                alert('An error occurred while saving your journal entry. Please check your internet connection and try again.');
+            }
+        });
+    </script>
+</body>
+</html> 

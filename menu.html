@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1>Welcome to Serene AI</h1>
+        <p>Choose your path to inner peace</p>
+    </div>
+    
+    <div class="menu-grid">
+        <a href="{{ url_for('chat_page') }}" class="menu-item" style="background: linear-gradient(135deg, #FF6B6B, #FF8E8E);">
+            <span>💭</span>
+            <h2>AI Chat</h2>
+            <p>Have a mindful conversation with your AI companion</p>
+        </a>
+        
+        <a href="{{ url_for('meditation') }}" class="menu-item" style="background: linear-gradient(135deg, #4ECDC4, #45B7AF);">
+            <span>🧘‍♂️</span>
+            <h2>Meditation</h2>
+            <p>Guided meditation sessions for peace and clarity</p>
+        </a>
+        
+        <a href="{{ url_for('journal') }}" class="menu-item" style="background: linear-gradient(135deg, #FFD166, #FFB347);">
+            <span>📔</span>
+            <h2>Journal</h2>
+            <p>Record your thoughts and track your journey</p>
+        </a>
+        
+        <a href="{{ url_for('mood_tracker') }}" class="menu-item" style="background: linear-gradient(135deg, #6A0572, #AB83A1);">
+            <span>🎯</span>
+            <h2>Mood Tracker</h2>
+            <p>Monitor and understand your emotional patterns</p>
+        </a>
+        
+        <a href="{{ url_for('community') }}" class="menu-item" style="background: linear-gradient(135deg, #1A535C, #4ECDC4);">
+            <span>🤝</span>
+            <h2>Community</h2>
+            <p>Share experiences and connect with others</p>
+        </a>
+        
+        <a href="{{ url_for('resources') }}" class="menu-item" style="background: linear-gradient(135deg, #FF9F1C, #FFBF69);">
+            <span>🌟</span>
+            <h2>Resources</h2>
+            <p>Access helpful mental health resources and emergency contacts</p>
+        </a>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        border-radius: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 2rem 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .header h1 {
+        font-family: 'Dancing Script', cursive;
+        font-size: 3.5em;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .header p {
+        font-size: 1.2em;
+        opacity: 0.9;
+    }
+
+    .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        padding: 1rem;
+    }
+
+    .menu-item {
+        padding: 2rem;
+        border-radius: 20px;
+        text-decoration: none;
+        color: white;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .menu-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+    }
+
+    .menu-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .menu-item:hover::before {
+        transform: translateY(0);
+    }
+
+    .menu-item span {
+        font-size: 3em;
+        margin-bottom: 1rem;
+        filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+    }
+
+    .menu-item h2 {
+        font-size: 1.5em;
+        margin-bottom: 1rem;
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .menu-item p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1em;
+        line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+        }
+
+        .menu-grid {
+            grid-template-columns: 1fr;
+            padding: 0.5rem;
+        }
+    }
+</style>
+{% endblock %} 

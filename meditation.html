@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meditation & Exercises</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #7C65C1;
+            --secondary-color: #FF8FB1;
+            --accent-color: #FCE2DB;
+            --dark-color: #1a1a1a;
+            --light-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --text-color: #e0e0e0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            background: #121212;
+            color: var(--text-color);
+        }
+
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 1rem;
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(124, 101, 193, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(124, 101, 193, 0.4);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            padding-top: 80px;
+        }
+
+        .meditation-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .meditation-header h1 {
+            font-size: 2.5em;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .meditation-header p {
+            color: var(--text-color);
+            font-size: 1.1em;
+        }
+
+        .options-section {
+            margin-bottom: 40px;
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 30px 0;
+            color: var(--primary-color);
+            font-size: 1.8em;
+        }
+
+        .option-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            color: var(--text-color);
+        }
+
+        .option-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .option-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .benefits-section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 15px;
+            background: #1a1a1a;
+            transition: all 0.3s ease;
+            color: var(--text-color);
+        }
+
+        .benefit-item:hover {
+            transform: translateY(-3px);
+            background: #2d2d2d;
+        }
+
+        .benefit-icon {
+            font-size: 2.5em;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                padding-top: 70px;
+            }
+
+            .options-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Timer Overlay Styles */
+        .timer-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .timer-container {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            min-width: 300px;
+            color: var(--text-color);
+        }
+
+        .timer-display {
+            font-size: 72px;
+            font-weight: bold;
+            margin: 20px 0;
+            font-family: monospace;
+            color: var(--primary-color);
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .timer-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            background: var(--primary-color);
+            color: white;
+            transition: background 0.3s ease;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-bar">
+        <a href="{{ url_for('menu') }}" class="nav-btn">Menu</a>
+        <a href="{{ url_for('logout') }}" class="nav-btn">Logout</a>
+    </div>
+
+    <div class="container">
+        <div class="meditation-header">
+            <h1>Find Your Inner Peace</h1>
+            <p>Choose a meditation session that resonates with your current state of mind</p>
+        </div>
+
+        <!-- First Section -->
+        <div class="options-section">
+            <h2 class="section-title">Mindfulness Practices</h2>
+            <div class="options-container">
+                <!-- Breathing -->
+                <div class="option-card" onclick="startTimer(5)">
+                    <div class="option-icon">🫁</div>
+                    <h3>Breathing</h3>
+                    <p>5 Minutes</p>
+                </div>
+
+                <!-- Meditation -->
+                <div class="option-card" onclick="startTimer(10)">
+                    <div class="option-icon">🧘‍♂️</div>
+                    <h3>Meditation</h3>
+                    <p>10 Minutes</p>
+                </div>
+
+                <!-- Quick Music -->
+                <div class="option-card" onclick="startTimer(3)">
+                    <div class="option-icon">🎵</div>
+                    <h3>Quick Music</h3>
+                    <p>3 Minutes</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Second Section -->
+        <div class="options-section">
+            <h2 class="section-title">Physical Activities</h2>
+            <div class="options-container">
+                <!-- Yoga -->
+                <div class="option-card" onclick="startTimer(15)">
+                    <div class="option-icon">🧘‍♀️</div>
+                    <h3>Yoga</h3>
+                    <p>15 Minutes</p>
+                </div>
+
+                <!-- Walking -->
+                <div class="option-card" onclick="startTimer(20)">
+                    <div class="option-icon">🚶‍♂️</div>
+                    <h3>Walking</h3>
+                    <p>20 Minutes</p>
+                </div>
+
+                <!-- Reading Books -->
+                <div class="option-card" onclick="startTimer(12)">
+                    <div class="option-icon">📚</div>
+                    <h3>Reading Books</h3>
+                    <p>12 Minutes</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="benefits-section">
+            <h2 style="text-align: center; color: var(--primary-color);">Benefits of Meditation</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">🧠</div>
+                    <h3>Reduced Stress</h3>
+                    <p>Lower anxiety and mental clarity</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">💪</div>
+                    <h3>Better Focus</h3>
+                    <p>Improved concentration and productivity</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">😴</div>
+                    <h3>Better Sleep</h3>
+                    <p>Enhanced sleep quality and duration</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">❤️</div>
+                    <h3>Emotional Balance</h3>
+                    <p>Greater emotional awareness and control</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timer Overlay -->
+    <div class="timer-overlay" id="timerOverlay">
+        <div class="timer-container">
+            <button class="close-button" onclick="closeTimer()">×</button>
+            <div class="timer-display" id="timerDisplay">00:00</div>
+            <div class="timer-controls">
+                <button class="timer-button" onclick="pauseTimer()" id="pauseButton">Pause</button>
+                <button class="timer-button" onclick="closeTimer()">End</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let timer;
+        let timeLeft;
+        let isPaused = false;
+
+        function startTimer(minutes) {
+            timeLeft = minutes * 60;
+            document.getElementById('timerOverlay').style.display = 'flex';
+            updateTimerDisplay();
+            timer = setInterval(() => {
+                if (!isPaused) {
+                    timeLeft--;
+                    updateTimerDisplay();
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        alert('Session completed!');
+                        closeTimer();
+                    }
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function pauseTimer() {
+            isPaused = !isPaused;
+            document.getElementById('pauseButton').textContent = isPaused ? 'Resume' : 'Pause';
+        }
+
+        function closeTimer() {
+            clearInterval(timer);
+            document.getElementById('timerOverlay').style.display = 'none';
+            isPaused = false;
+            document.getElementById('pauseButton').textContent = 'Pause';
+        }
+
+        // Close timer with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeTimer();
+        });
+    </script>
+</body>
+</html> 

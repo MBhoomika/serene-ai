@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resources - Serene AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #2196F3;
+            --accent-color: #FF5722;
+            --dark-color: #2C3E50;
+            --light-color: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #ECF0F3;
+            color: var(--dark-color);
+        }
+
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 1rem;
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            padding-top: 80px;
+        }
+
+        .resources-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .resources-header h1 {
+            font-size: 2.5em;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .resources-header p {
+            color: #666;
+            font-size: 1.1em;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .resource-category {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: white;
+        }
+
+        .category-title {
+            margin: 0;
+            color: var(--dark-color);
+        }
+
+        .resource-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .resource-item {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .resource-item:hover {
+            transform: translateX(5px);
+            background: #f0f2f5;
+        }
+
+        .resource-item a {
+            color: var(--dark-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .resource-item a:hover {
+            color: var(--primary-color);
+        }
+
+        .emergency-section {
+            background: #ffebee;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-left: 5px solid #ff5252;
+        }
+
+        .emergency-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .emergency-icon {
+            font-size: 2em;
+            color: #ff5252;
+        }
+
+        .emergency-contacts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .emergency-contact {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-label {
+            font-weight: 600;
+            color: #ff5252;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-number {
+            font-size: 1.2em;
+            color: var(--dark-color);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                padding-top: 70px;
+            }
+
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-bar">
+        <a href="{{ url_for('menu') }}" class="nav-btn">Menu</a>
+        <a href="{{ url_for('logout') }}" class="nav-btn">Logout</a>
+    </div>
+
+    <div class="container">
+        <div class="resources-header">
+            <h1>Mental Health Resources</h1>
+            <p>Access a curated collection of mental health resources and support services</p>
+        </div>
+
+        <div class="resources-grid">
+            <div class="resource-category">
+                <div class="category-header">
+                    <div class="category-icon">📚</div>
+                    <h2 class="category-title">Educational Resources</h2>
+                </div>
+                <ul class="resource-list">
+                    <li class="resource-item">
+                        <a href="https://www.nimh.nih.gov" target="_blank">
+                            <span>🔍</span> National Institute of Mental Health
+                        </a>
+                    </li>
+                    <li class="resource-item">
+                        <a href="https://www.who.int/mental_health" target="_blank">
+                            <span>🌍</span> WHO Mental Health Resources
+                        </a>
+                    </li>
+                    <li class="resource-item">
+                        <a href="https://www.mind.org.uk" target="_blank">
+                            <span>💡</span> Mind - Mental Health Information
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="resource-category">
+                <div class="category-header">
+                    <div class="category-icon">📱</div>
+                    <h2 class="category-title">Wellness Apps</h2>
+                </div>
+                <ul class="resource-list">
+                    <li class="resource-item">
+                        <a href="https://www.headspace.com" target="_blank">
+                            <span>🧘‍♂️</span> Headspace - Meditation & Sleep
+                        </a>
+                    </li>
+                    <li class="resource-item">
+                        <a href="https://www.calm.com" target="_blank">
+                            <span>😌</span> Calm - Meditation & Relaxation
+                        </a>
+                    </li>
+                    <li class="resource-item">
+                        <a href="https://www.insighttimer.com" target="_blank">
+                            <span>⏰</span> Insight Timer - Free Meditation
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="resource-category">
+                <div class="category-header">
+                    <div class="category-icon">🤝</div>
+                    <h2 class="category-title">Support Communities</h2>
+                </div>
+                <ul class="resource-list">
+                    <li class="resource-item">
+                        <a href="https://www.7cups.com" target="_blank">
+                            <span>👥</span> 7 Cups - Online Therapy & Counseling
+                        </a>
+                    </li>
+                    <li class="resource-item">
+                        <a href="https://www.reddit.com/r/mentalhealth/" target="_blank">
+                            <span>💭</span> Reddit Mental Health Community
+                        </a>
+                    </li>
+                    <li class="resource-item">
+                        <a href="https://www.nami.org" target="_blank">
+                            <span>🏠</span> NAMI - Support Groups
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="emergency-section">
+            <div class="emergency-header">
+                <div class="emergency-icon">🆘</div>
+                <h2>24/7 Crisis Support</h2>
+            </div>
+            <div class="emergency-contacts">
+                <div class="emergency-contact">
+                    <div class="contact-label">National Crisis Hotline</div>
+                    <div class="contact-number">988</div>
+                </div>
+                <div class="emergency-contact">
+                    <div class="contact-label">Crisis Text Line</div>
+                    <div class="contact-number">Text HOME to 741741</div>
+                </div>
+                <div class="emergency-contact">
+                    <div class="contact-label">Veterans Crisis Line</div>
+                    <div class="contact-number">1-800-273-8255</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mood Tracker - Serene AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --happy-color: #FFD93D;
+            --calm-color: #98DDCA;
+            --sad-color: #6C9BCF;
+            --angry-color: #FF6B6B;
+            --anxious-color: #B983FF;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #FF9A9E, #FAD0C4, #B983FF);
+            color: #2C3E50;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5em;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 0.5rem;
+        }
+
+        .mood-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .mood-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+        }
+
+        .mood-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .mood-emoji {
+            font-size: 4em;
+            margin-bottom: 1rem;
+        }
+
+        .mood-label {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .tracker-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            background: white;
+            border: 2px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-day:hover {
+            transform: scale(1.1);
+        }
+
+        .mood-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 600;
+            margin: 0.5rem 0;
+        }
+
+        .mood-input {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+        }
+
+        .mood-selector {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .mood-option {
+            padding: 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 2em;
+        }
+
+        .mood-option:hover {
+            transform: scale(1.2);
+        }
+
+        .mood-note {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #eee;
+            border-radius: 15px;
+            margin: 1rem 0;
+            font-family: inherit;
+            resize: none;
+        }
+
+        .save-btn {
+            background: linear-gradient(45deg, #FF9A9E, #FAD0C4);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 154, 158, 0.3);
+        }
+
+        .mood-chart {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            height: 300px;
+            position: relative;
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            height: 200px;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(to top, var(--happy-color), var(--calm-color));
+            border-radius: 10px 10px 0 0;
+            transition: height 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .mood-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Mood Tracker</h1>
+            <p>Track and understand your emotional journey</p>
+        </div>
+
+        <div class="mood-input">
+            <h2>How are you feeling today?</h2>
+            <div class="mood-selector">
+                <div class="mood-option" style="color: var(--happy-color)" onclick="selectMood(this, 'happy')">😊</div>
+                <div class="mood-option" style="color: var(--calm-color)" onclick="selectMood(this, 'calm')">😌</div>
+                <div class="mood-option" style="color: var(--sad-color)" onclick="selectMood(this, 'sad')">😔</div>
+                <div class="mood-option" style="color: var(--angry-color)" onclick="selectMood(this, 'angry')">😤</div>
+                <div class="mood-option" style="color: var(--anxious-color)" onclick="selectMood(this, 'anxious')">😰</div>
+            </div>
+            <textarea class="mood-note" placeholder="Add a note about your mood (optional)..." rows="3"></textarea>
+            <button class="save-btn">Save Mood 💫</button>
+        </div>
+
+        <div class="mood-stats">
+            <div class="stat-card">
+                <h3>Most Frequent Mood</h3>
+                <div class="stat-number">😊</div>
+                <p>This Week</p>
+            </div>
+            <div class="stat-card">
+                <h3>Mood Streak</h3>
+                <div class="stat-number">7</div>
+                <p>Days Tracked</p>
+            </div>
+            <div class="stat-card">
+                <h3>Mood Improvement</h3>
+                <div class="stat-number">↗️</div>
+                <p>Trending Up</p>
+            </div>
+        </div>
+
+        <div class="mood-chart">
+            <h3>Weekly Mood Pattern</h3>
+            <div class="chart-bars">
+                <div class="chart-bar" style="height: 60%"></div>
+                <div class="chart-bar" style="height: 80%"></div>
+                <div class="chart-bar" style="height: 40%"></div>
+                <div class="chart-bar" style="height: 90%"></div>
+                <div class="chart-bar" style="height: 70%"></div>
+                <div class="chart-bar" style="height: 85%"></div>
+                <div class="chart-bar" style="height: 95%"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedMood = null;
+
+        function selectMood(element, mood) {
+            // Remove selected class from all moods
+            document.querySelectorAll('.mood-option').forEach(mood => {
+                mood.style.backgroundColor = '';
+            });
+            
+            // Add selected class to clicked mood
+            element.style.backgroundColor = '#f0f0f0';
+            selectedMood = mood;
+        }
+
+        // Add event listener for save button
+        document.querySelector('.save-btn').addEventListener('click', async function() {
+            const note = document.querySelector('.mood-note').value;
+            
+            if (!selectedMood) {
+                alert('Please select a mood before saving.');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/save_mood', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        mood: selectedMood,
+                        note: note
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('Mood saved successfully!');
+                    // Clear the form
+                    document.querySelector('.mood-note').value = '';
+                    // Clear selected mood
+                    document.querySelectorAll('.mood-option').forEach(mood => {
+                        mood.style.backgroundColor = '';
+                    });
+                    selectedMood = null;
+                } else {
+                    console.error('Server error:', data);
+                    alert('Error saving mood: ' + (data.error || 'Unknown error occurred'));
+                }
+            } catch (error) {
+                console.error('Network error:', error);
+                alert('An error occurred while saving your mood. Please check your internet connection and try again.');
+            }
+        });
+
+        // Initialize chart animation
+        document.querySelectorAll('.chart-bar').forEach(bar => {
+            const randomHeight = Math.random() * 100;
+            bar.style.height = `${randomHeight}%`;
+        });
+    </script>
+</body>
+</html> 
